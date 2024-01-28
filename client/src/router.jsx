@@ -3,6 +3,7 @@ import { RootLayout } from "./layouts/RootLayout"
 import { postRoute } from "./pages/Post"
 import { postListRoute } from "./pages/PostList"
 import { newPostRoute } from "./pages/NewPost"
+import { editPostRoute } from "./pages/EditPost"
 import { todoListRoute } from "./pages/TodoList"
 import { userRoute } from "./pages/User"
 import { userListRoute } from "./pages/UserList"
@@ -23,7 +24,13 @@ export const router = createBrowserRouter([
                 index: true,
                 ...postListRoute,
               },
-              { path: ":postId", ...postRoute },
+              {
+                path: ":postId",
+                children: [
+                  { index: true, ...postRoute },
+                  { path: "edit", ...editPostRoute },
+                ],
+              },
               { path: "new", ...newPostRoute },
             ],
           },
