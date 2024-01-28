@@ -8,7 +8,12 @@ function Post() {
 
   return (
     <>
-      <h1 className="page-title">{post.title}</h1>
+      <h1 className="page-title">
+        {post.title}
+        <Link className="btn btn-outline" to="edit">
+          Edit
+        </Link>
+      </h1>
       <span className="page-subtitle">
         By: <Link to={`/users/${user.id}`}>{user.name}</Link>
       </span>
@@ -16,7 +21,7 @@ function Post() {
 
       <h3 className="mt-4 mb-2">Comments</h3>
       <div className="card-stack">
-        {comments.map(comment => (
+        {comments.map((comment) => (
           <div key={comment.id} className="card">
             <div className="card-body">
               <div className="text-sm mb-1">{comment.email}</div>
