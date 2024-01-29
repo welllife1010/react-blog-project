@@ -1,14 +1,18 @@
-import { redirect, useLoaderData } from "react-router-dom"
+import { redirect, useLoaderData, useNavigation } from "react-router-dom"
 import { createPost } from "../api/posts"
 import { getUsers } from "../api/users"
 import { PostForm } from "../components/PostForm"
 
 function NewPost() {
   const users = useLoaderData()
+  const { state } = useNavigation()
+
+  const isSubmitting = state === "submitting"
+
   return (
     <>
       <h1 className="page-title">New Post</h1>
-      <PostForm users={users} />
+      <PostForm users={users} isSubmitting={isSubmitting} />
     </>
   )
 }
