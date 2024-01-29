@@ -3,6 +3,7 @@ import { getPosts } from "../api/posts"
 import { PostCard } from "../components/PostCard"
 import { useEffect, useRef } from "react"
 import { getUsers } from "../api/users"
+import { FormGroup } from "../components/FormGroup"
 
 function PostList() {
   const {
@@ -34,11 +35,11 @@ function PostList() {
 
       <Form className="form mb-4">
         <div className="form-row">
-          <div className="form-group">
+          <FormGroup>
             <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
-          </div>
-          <div className="form-group">
+          </FormGroup>
+          <FormGroup>
             <label htmlFor="userId">Author</label>
             <select type="search" name="userId" id="userId" ref={userIdRef}>
               <option value="">Any</option>
@@ -48,7 +49,7 @@ function PostList() {
                 </option>
               ))}
             </select>
-          </div>
+          </FormGroup>
           <button className="btn">Filter</button>
         </div>
       </Form>

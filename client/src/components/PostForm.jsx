@@ -1,11 +1,16 @@
 import { Form, Link } from "react-router-dom"
 import { FormGroup } from "../components/FormGroup"
 
-export function PostForm({ users, isSubmitting, defaultValues = {} }) {
+export function PostForm({
+  users,
+  isSubmitting,
+  errors = {},
+  defaultValues = {},
+}) {
   return (
     <Form method="post" className="form">
       <div className="form-row">
-        <FormGroup>
+        <FormGroup errorMessage={errors.title}>
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -13,9 +18,8 @@ export function PostForm({ users, isSubmitting, defaultValues = {} }) {
             id="title"
             defaultValue={defaultValues.title}
           />
-          <div className="error-message">Required</div>
         </FormGroup>
-        <FormGroup>
+        <FormGroup errorMessage={errors.userId}>
           <label htmlFor="userId">Author</label>
           <select name="userId" id="userId" defaultValue={defaultValues.userId}>
             {users.map((user) => (
@@ -27,7 +31,7 @@ export function PostForm({ users, isSubmitting, defaultValues = {} }) {
         </FormGroup>
       </div>
       <div className="form-row">
-        <FormGroup>
+        <FormGroup errorMessage={errors.body}>
           <label htmlFor="body">Body</label>
           <textarea
             name="body"
@@ -46,4 +50,22 @@ export function PostForm({ users, isSubmitting, defaultValues = {} }) {
       </div>
     </Form>
   )
+}
+
+export function postFormValidator({ title, body, userId }) {
+  const errors = {}
+
+  if (title === "") {
+    errors.title = "title is Required"
+  }
+
+  if (body === "") {
+    errors.body = "body is Required"
+  }
+
+  if (userId === "") {
+    errors.userId = "userId is Required"
+  }
+
+  return errors
 }

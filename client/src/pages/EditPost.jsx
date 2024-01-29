@@ -1,11 +1,17 @@
-import { redirect, useLoaderData } from "react-router-dom"
-import { PostForm } from "../components/PostForm"
+import {
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom"
+import { PostForm, postFormValidator } from "../components/PostForm"
 import { getUsers } from "../api/users"
 import { getPost, updatePost } from "../api/posts"
 
 function EditPost() {
   const { users, post } = useLoaderData()
   const { state } = useNavigation()
+  const errors = useActionData()
 
   const isSubmitting = state === "submitting"
   return (
@@ -15,6 +21,7 @@ function EditPost() {
         users={users}
         isSubmitting={isSubmitting}
         defaultValues={post}
+        errors={errors}
       />
     </>
   )
@@ -32,6 +39,12 @@ async function action({ request, params: { postId } }) {
   const title = formData.get("title")
   const body = formData.get("body")
   const userId = formData.get("userId")
+
+  const errors = postFormValidator({ title, userId, body })
+
+  if (Object.keys(errors).length > 0) {
+    return errors
+  }
 
   const post = await updatePost(
     postId,

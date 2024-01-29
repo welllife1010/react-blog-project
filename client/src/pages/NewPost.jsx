@@ -1,18 +1,24 @@
-import { redirect, useLoaderData, useNavigation } from "react-router-dom"
+import {
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom"
 import { createPost } from "../api/posts"
 import { getUsers } from "../api/users"
-import { PostForm } from "../components/PostForm"
+import { PostForm, postFormValidator } from "../components/PostForm"
 
 function NewPost() {
   const users = useLoaderData()
   const { state } = useNavigation()
+  const errors = useActionData()
 
   const isSubmitting = state === "submitting"
 
   return (
     <>
       <h1 className="page-title">New Post</h1>
-      <PostForm users={users} isSubmitting={isSubmitting} />
+      <PostForm users={users} isSubmitting={isSubmitting} errors={errors} />
     </>
   )
 }
@@ -22,6 +28,13 @@ async function action({ request }) {
   const title = formData.get("title")
   const body = formData.get("body")
   const userId = formData.get("userId")
+
+  // check errors before create the posts
+  const errors = postFormValidator({ title, userId, body })
+
+  if (Object.keys(errors).length > 0) {
+    return errors
+  }
 
   const post = await createPost(
     { title, body, userId },
